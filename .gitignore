@@ -56,3 +56,11 @@ env/
 
 # OS files
 .DS_Store
+
+# IDEs
+.idea/
+
+# Generated files
+last_*.txt
+replied_users.txt
+users_list.txt

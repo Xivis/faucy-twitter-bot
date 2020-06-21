@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 class FaucyBot:
     api = None
-    loop_time = 10
+    loop_time = 60
     users_list_file = 'users_list.txt'
     networks = {
         'goerli': {
@@ -50,7 +50,10 @@ class FaucyBot:
             with open(self.users_list_file, 'w'):
                 pass
 
+        print('>> Faucy bot initiated')
+
     def start(self):
+        print('>> Faucy bot starting')
         while True:
             for key, network in self.networks.items():
                 new_tweets = self.search(network['search_term'], network['last_id'])
@@ -105,6 +108,7 @@ class FaucyBot:
                 tweet.user.screen_name
             ) + 'Get all your test $ETH on one site 🚀 🦄'
             self.api.update_status(message, tweet.id)
+            print('>>>> Replying to @', tweet.user.screen_name)
 
     def get_latest_id(self):
         """

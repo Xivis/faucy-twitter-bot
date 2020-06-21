@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 class FaucyBot:
     api = None
-    loop_time = 60
+    loop_time = 30
     users_list_file = 'users_list.txt'
     networks = {
         'goerli': {

@@ -116,8 +116,6 @@ class FaucyBot:
         Minor hack2 - Follow an account that tweets every hour :) Thanks @thebigbenclock
         """
         results = self.api.home_timeline()
-        for each in results:
-            print(each.id, each.created_at, each.text)
         if results:
             return results[0].id
         return 0

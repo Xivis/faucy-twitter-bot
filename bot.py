@@ -8,6 +8,7 @@ class FaucyBot:
     api = None
     loop_time = 30
     users_list_file = 'users_list.txt'
+    replies_list_file = 'replies_list.txt'
     networks = {
         'goerli': {
             'search_term': '#Goerli #Ethereum',
@@ -45,15 +46,16 @@ class FaucyBot:
         for key, network in self.networks.items():
             self.networks[key]['last_id'] = self.get_last_id(network)
 
-        # Create users list file if it does not exists
-        if not os.path.exists(self.users_list_file):
-            with open(self.users_list_file, 'w'):
-                pass
+        # Create users & replies list files if it does not exists
+        for each in [self.users_list_file, self.replies_list_file]:
+            if not os.path.exists(each):
+                with open(each, 'w'):
+                    pass
 
-        print('>> Faucy bot initiated')
+        print('>> Faucy Bot Initiated')
 
     def start(self):
-        print('>> Faucy bot starting')
+        print('>> Faucy Bot Started')
         while True:
             for key, network in self.networks.items():
                 new_tweets = self.search(network['search_term'], network['last_id'])
@@ -94,6 +96,13 @@ class FaucyBot:
         f_write.close()
         return
 
+    def save_reply(self, tweet):
+        reply = 'https://twitter.com/{}/status/{}'.format(tweet.user.screen_name, tweet.id)
+        f_write = open(self.replies_list_file, 'a')
+        f_write.write(reply+'\n')
+        f_write.close()
+        return
+
     def check_new_user(self, id):
         with open(self.users_list_file) as f:
             datafile = f.readlines()
@@ -102,13 +111,18 @@ class FaucyBot:
                 return False
         return True
 
+    def get_replies(self):
+        with open(self.replies_list_file) as f:
+            datafile = f.readlines()
+            return datafile
+
     def reply_tweet(self, tweet):
         if tweet.user.screen_name in self.safe_list:
             message = 'Hi @{}! Did you try https://faucy.dev ? '.format(
                 tweet.user.screen_name
             ) + 'Get all your test $ETH on one site 🚀 🦄'
             self.api.update_status(message, tweet.id)
-            print('>>>> Replying to @', tweet.user.screen_name)
+            self.save_reply(tweet)
 
     def get_latest_id(self):
         """

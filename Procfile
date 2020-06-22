@@ -1,1 +1,2 @@
-worker: python3 bot/__main__.py
+web: python3 app.py
+worker: python3 bot.py

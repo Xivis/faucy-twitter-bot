@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 class FaucyBot:
     api = None
-    loop_time = 60
+    loop_time = 150
     users_list_file = 'users_list.txt'
     replies_list_file = 'replies_list.txt'
     networks = {

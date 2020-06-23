@@ -121,7 +121,10 @@ class FaucyBot:
             message = 'Hi @{}! Did you try https://faucy.dev ? '.format(
                 tweet.user.screen_name
             ) + 'Get all your test $ETH on one site 🚀 🦄'
-            self.api.update_status(message, tweet.id)
+            try:
+                self.api.update_status(message, tweet.id)
+            except tweepy.RateLimitError:
+                time.sleep(15 * 60)
             self.save_reply(tweet)
 
     def get_latest_id(self):
@@ -129,13 +132,20 @@ class FaucyBot:
         Minor hack - As the API does not gives us the latest tweet, we search in our home timeline
         Minor hack2 - Follow an account that tweets every hour :) Thanks @thebigbenclock
         """
-        results = self.api.home_timeline()
-        if results:
-            return results[0].id
+        try:
+            results = self.api.home_timeline()
+            if results:
+                return results[0].id
+        except tweepy.RateLimitError:
+            pass
         return 0
 
     def search(self, query, last_id):
-        return self.api.search(query, since_id=last_id)
+        try:
+            return self.api.search(query, since_id=last_id)
+        except tweepy.RateLimitError:
+            pass
+        return []
 
 
 def main():

@@ -16,10 +16,10 @@ def stats():
     return {
         "safe_list": bot.safe_list,
         "rinkeby": {
-            "last_id": bot.get_last_id(bot.networks['rinkeby'])
+            "last_id": bot.get_last_id("rinkeby")
         },
         "goerli": {
-            "last_id": bot.get_last_id(bot.networks['goerli'])
+            "last_id": bot.get_last_id("goerli")
         },
         "replies": bot.get_replies()
     }

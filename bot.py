@@ -62,6 +62,8 @@ class FaucyBot:
     def write_db(self, data):
         with open(self.db_file, 'w') as f:
             json.dump(data, f)
+            print("Writing:")
+            print(data)
 
     def start(self):
         print(">> Faucy Bot Started")
